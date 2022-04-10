@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Issue } from '../issue';
 import { IssuesService } from '../issues.service';
 
 
@@ -14,6 +15,8 @@ export class IssueReportComponent implements OnInit {
 
   constructor( private builder: FormBuilder, private issueService: IssuesService) { }
 
+  suggestions: Issue[] = [];
+
   ngOnInit(): void {
     this.issueForm = this.builder.group({
       title: ['', Validators.required],
@@ -21,10 +24,13 @@ export class IssueReportComponent implements OnInit {
       priority: ['', Validators.required],
       type: ['', Validators.required]
       });
+
+      this.issueForm.controls['title'].valueChanges.subscribe((title: string) =>{
+        this.suggestions = this.issueService.getSuggestions(title);
+      });
   }
   
   addIssue() {
-    debugger;
     if(this.issueForm && this.issueForm.invalid){
       this.issueForm.markAllAsTouched();
       return;

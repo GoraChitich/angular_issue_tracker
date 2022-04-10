@@ -24,4 +24,18 @@ export class IssuesService {
     const index = this.issues.findIndex(i => i===issue);
     this.issues[index] = selectedIssue;
   }
+
+  getSuggestions(title: string): Issue[] {
+    if(title.length>3){
+      return this.issues.filter(issue => issue.title.indexOf(title) !== -1);
+    }
+    return [];
+  }
+
+  updateIssue(currentIssue: Issue | undefined, formIssue: Issue){
+    const index = this.issues.findIndex(i => i===currentIssue);
+    this.issues[index] = formIssue;
+    if(this.issues[index])
+      this.issues[index].issueNo = currentIssue? currentIssue?.issueNo: this.issues[index].issueNo ;
+  }
 }

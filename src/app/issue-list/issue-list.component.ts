@@ -11,6 +11,7 @@ import { IssueReportComponent } from '../issue-report/issue-report.component';
 export class IssueListComponent implements OnInit {
   showReportIssue = false;
   selectedIssue: Issue | null = null;
+  editedIssue: Issue | null = null;
   issues: Issue[] = [];
   constructor(private issueService: IssuesService) {}
 
@@ -23,6 +24,7 @@ export class IssueListComponent implements OnInit {
 
   onCloseReport() {
     this.showReportIssue = false;
+    this.editedIssue = null;
     this.getIssues();
   }
 
@@ -31,6 +33,10 @@ export class IssueListComponent implements OnInit {
       this.issueService.completeIssue(this.selectedIssue);
       this.getIssues();
     }
+    if(confirmed && this.editedIssue){
+      this.getIssues();
+    }
     this.selectedIssue = null;
+    this.editedIssue = null;
   }
 }
